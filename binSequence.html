@@ -1,0 +1,65 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bin Sequence View</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+
+</head>
+
+<body>
+
+    <!--Navigation bar-->
+    <div id="nav-placeholder">
+
+    </div>
+
+    <script>
+        $(function(){
+            $("#nav-placeholder").load("nav.html");
+        });
+    </script>
+    <!--end of Navigation bar-->
+    <div class="w3-container" style="margin-left:25%">
+        <h3 class="w3-panel w3-green w3-padding-16 w3-xlarge">Bin Sequence View</h3>
+
+        <div class="w3-container w3-center w3-responsive">
+            <table align="center" id="binSequence" class="display" style="border-collapse:collapse; border-spacing:0; margin:20px;">
+                <thead>
+                <tr>
+                    <th>Bin Location</th>
+                    <th>Bin Sequence</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>Bin Location</th>
+                    <th>Bin Sequence</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+
+    </div>
+
+
+    <script>
+        $(document).ready(function() {
+            $('#binSequence').DataTable( {
+                "bProcessing": true,
+                "sAjaxSource": "binSequence.php"
+            });
+        } );
+    </script>
+
+
+
+</body>
+
+</html>

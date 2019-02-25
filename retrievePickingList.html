@@ -1,0 +1,133 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Picklist</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="jquery.redirect.js"></script>
+
+
+</head>
+
+<body>
+<!--Navigation bar-->
+<div id="nav-placeholder">
+
+</div>
+
+<script>
+    $(function(){
+        $("#nav-placeholder").load("nav.html");
+    });
+</script>
+<!--end of Navigation bar-->
+<div class="w3-container" style="margin-left:25%">
+    <h3 class="w3-panel w3-green w3-padding-16 w3-xlarge">Retrieve Picking List</h3>
+</div>
+<div class="w3-container w3-center w3-responsive" style="margin-left:25%">
+    <form>
+        <br><br>
+        <label class="w3-large"><b>Enter all Delivery Numbers you want to retrieve. You can retrieve up to 10!</b></label>
+
+        <br><br><br>
+        <table align="center" id="deliveryListTable" style="border-collapse: collapse; border-spacing: 0;">
+            <thead>
+                <tr>
+                    <th>Delivery Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="delivery"><input type="text" name="delivery"></td>
+                </tr>
+                <tr>
+                    <td class="delivery"><input type="text" name="delivery"></td>
+                </tr>
+                <tr>
+                    <td class="delivery"><input type="text" name="delivery"></td>
+                </tr>
+                <tr>
+                    <td class="delivery"><input type="text" name="delivery"></td>
+                </tr>
+                <tr>
+                    <td class="delivery"><input type="text" name="delivery"></td>
+                </tr>
+                <tr>
+                    <td class="delivery"><input type="text" name="delivery"></td>
+                </tr>
+                <tr>
+                    <td class="delivery"><input type="text" name="delivery"></td>
+                </tr>
+                <tr>
+                    <td class="delivery"><input type="text" name="delivery"></td>
+                </tr>
+                <tr>
+                    <td class="delivery"><input type="text" name="delivery"></td>
+                </tr>
+                <tr>
+                    <td class="delivery"><input type="text" name="delivery"></td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+        <input class="w3-button w3-green" type="button" id="btnPicklist" value="Print Picking List"></input>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('td input').bind('paste', null, function (e) {
+            $txt = $(this);
+            setTimeout(function () {
+                var values = $txt.val().split(/\s+/);
+                var currentRowIndex = $txt.parent().parent().index();
+                var currentColIndex = $txt.parent().index();
+
+                var totalRows = $('#deliveryListTable tbody tr').length;
+                var totalCols = $('#deliveryListTable thead th').length;
+                var count =0;
+
+                for (var i = currentRowIndex; i < totalRows; i++) {
+                    if (i != currentRowIndex)
+                        currentRowIndex = 0;
+                    for (var j = currentColIndex; j < totalCols; j++) {
+                        var value = values[count];
+                        var inp = $('#deliveryListTable tbody tr').eq(i).find('td').eq(j).find('input');
+                        inp.val(value);
+                        count++;
+                    }
+                }
+            }, 0);
+        });
+
+        $('#btnPicklist').click(function(){
+            var deliveries = [];
+
+            $('#deliveryListTable tbody tr').each(function() {
+                if ($(this).find('.delivery input').val() !== "") {
+                    deliveries.push($(this).find('.delivery input').val());
+                }
+
+            });
+
+
+            $.ajax({
+                type: 'POST',
+                url: 'retrievePickingList.php',
+                data: {
+                    deliveries: JSON.stringify(deliveries)
+                },
+                success: function(data) {
+                    $.redirect('printMultiPicklist.php', {'retrieveList': data});
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Material RF Tag Configuration</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <!--Navigation bar-->
+    <div id="nav-placeholder">
+
+    </div>
+
+    <script>
+        $(function(){
+            $("#nav-placeholder").load("nav.html");
+        });
+    </script>
+    <!--end of Navigation bar-->
+
+    <div class="w3-container" style="margin-left:25%">
+        <h3 class="w3-panel w3-green w3-padding-16 w3-xlarge">Write Material RF Tag</h3>
+    </div>
+
+    <div class="w3-container w3-center w3-responsive" style="margin-left:25%; padding:100px;">
+        <h2>Write or Update a Material RF Tag</h2>
+        <br><br>
+        <form action="/write_material.php" target="_blank" method="POST">
+            <label class="w3-text-green"><b>Material</b></label>
+            <input class="w3-input w3-border w3-border-black" type="text" name="material" required>
+            <br><br>
+            <label class="w3-text-green"><b>Description</b></label>
+            <input class="w3-input w3-border" type="text" name="desc" required>
+            <br><br>
+            Serial Number:<br>
+            <input class="w3-input w3-border" type="text" name="slnum">
+            <br><br><br><br>
+            <input class="w3-button w3-green" type="submit" value="Write Tag">
+        </form>
+    </div>
+
+</body>
+
+</html>
