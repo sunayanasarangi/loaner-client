@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Picklist</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="loaner.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
@@ -12,22 +14,28 @@
 </head>
 
 <body>
-    <!--Navigation bar-->
-    <div id="nav-placeholder">
-
-    </div>
-
-    <script>
-        $(function(){
-            $("#nav-placeholder").load("nav.html");
-        });
-    </script>
-    <!--end of Navigation bar-->
-    <div class="w3-container" style="margin-left:25%">
-        <h3 class="w3-panel w3-green w3-padding-16 w3-xlarge">Loaner cockpit</h3>
-        <div class="w3-container w3-center w3-padding-64">
-            <h1>Welcome to Loaner Cockpit!</h1>
+    <header>
+        <div class='w3-container top'>
+            <a class='logo notranslate' href='//www.beamandhook.com'>beam&hook<span class='dotcom'>.com</span></a>
         </div>
+
+        <div class='w3-card-2 topnav notranslate' id='topnav'>
+            <div style="overflow:auto;">
+                <div class="w3-bar w3-left" style="width:100%;overflow:hidden;height:44px">
+                    <a href='index.html' class='topnav-icons fa fa-home w3-left w3-bar-item w3-button' title='Home'></a>
+                    <a class="w3-bar-item w3-button" href='picklist.html'>Generate Picking List</a>
+                    <a class="w3-bar-item w3-button" href='retrievePickingList.html'>Retrieve Picking List</a>
+                    <a class="w3-bar-item w3-button" href='binSequence.html'>Bin Sequence View</a>
+                    <a class="w3-bar-item w3-button" href='viewBin.html'>Bin Report</a>
+                    <a class="w3-bar-item w3-button" href='viewDeliveries.html'>Delivery History</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <h3 class="w3-panel w3-green w3-padding-16 w3-xlarge w3-center">Loaner cockpit</h3>
+    <div class="w3-container w3-center w3-padding-64">
+        <h1>Welcome to Loaner Cockpit!</h1>
     </div>
 
 </body>
