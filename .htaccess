@@ -1,5 +1,2 @@
 
-AuthUserFile /.htpasswd
-AuthType Basic
-AuthName "Restricted Access"
-Require valid-user
+RedirectMatch 301 /(.*) http://www.beamandhook.com$1
