@@ -39,7 +39,7 @@ body {
 }
 
 .footer {
-    position: fixed;
+    position: relative;
     height:40px;
     left: 0;
     bottom: 0;
