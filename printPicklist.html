@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Bin Sequence View</title>
+    <title>Bin Report</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="loaner.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -45,20 +45,22 @@
     </div>
 </div>
 
-<h3 class="w3-panel w3-green w3-padding-16 w3-xlarge w3-center">Bin Sequence View</h3>
+<h3 class="w3-panel w3-green w3-padding-16 w3-xlarge w3-center">Picklist</h3>
 
 <div class="w3-container w3-center w3-responsive">
-    <table align="center" id="binSequence" class="display" style="border-collapse:collapse; border-spacing:0; margin:20px;">
+    <table align="center" id="viewBin" class="display" style="border-collapse:collapse; border-spacing:0; margin:20px;">
         <thead>
         <tr>
+            <th>Material (SKU)</th>
             <th>Bin Location</th>
-            <th>Bin Sequence</th>
+            <th>Count</th>
         </tr>
         </thead>
         <tfoot>
         <tr>
+            <th>Material (SKU)</th>
             <th>Bin Location</th>
-            <th>Bin Sequence</th>
+            <th>Count</th>
         </tr>
         </tfoot>
     </table>
@@ -80,29 +82,24 @@
 </script>
 
 
-    <script>
-        $(document).ready(function() {
-            $('#binSequence').DataTable( {
-                "bProcessing": true,
-                "sAjaxSource": "binSequence.php",
-                "dom": 'Bfrtip',
-                "buttons": [
-                    {
-                        extend: 'excelHtml5',
-                        title: 'BinSequence'
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        title: 'BinSequence'
-                    },
-                    {
-                        extend: 'csvHtml5',
-                        title: 'BinSequence'
-                    }
-                ]
-            });
-        } );
-    </script>
+<script>
+    $(document).ready(function() {
+        $('#viewBin').DataTable( {
+            "ordering": false,
+            "bProcessing": true,
+            "sAjaxSource": "createPicklist.php",
+            "data": {
+                deliveryNumber: delivery_number,
+                materials: JSON.stringify(materials),
+                quantity: JSON.stringify(quantity)
+            },
+            "dom": 'Bfrtip',
+            "buttons": [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+    } );
+</script>
 
 
 

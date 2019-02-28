@@ -86,7 +86,14 @@ if (isset($delivery_number) and isset($materials) and isset($quantity)) {
     $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
     if ($http_code == '200') {
-        echo json_encode($material_bin_array);
+        //echo json_encode($material_bin_array);
+        $results = array(
+            "sEcho" => 1,
+            "iTotalRecords" => count($material_bin_array),
+            "iTotalDisplayRecords" => count($material_bin_array),
+            "aaData"=>$material_bin_array);
+
+        echo json_encode($results);
     }
     curl_close($curl);
 }
