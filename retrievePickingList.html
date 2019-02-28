@@ -140,6 +140,10 @@
 
             });
 
+            if (deliveries.length === 0) {
+                alert("Please enter atleast one delivery number");
+                return;
+            }
 
             $.ajax({
                 type: 'POST',

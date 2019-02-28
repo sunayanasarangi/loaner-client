@@ -1,3 +1,4 @@
+
 <?php
 require('fpdf181/fpdf.php');
 
@@ -24,15 +25,16 @@ $lMargin = ($pdf->GetPageWidth() - array_sum($w)) / 2;
 $pdf->SetMargins($lMargin, 40);
 
 $pdf->AddPage();
+$pdf->Image("goback.png",8,11.3,73,0,"","picklist.html");
 $pdf->SetFont('Arial','',16);
 
 $pdf->Cell(40,7,'Delivery Number: '. $delivery_number);
 $pdf->Ln();
 $pdf->Ln();
 // Colors, line width and bold font
-$pdf->SetFillColor(255,0,0);
+$pdf->SetFillColor(76,175,80);
 $pdf->SetTextColor(255);
-$pdf->SetDrawColor(128,0,0);
+$pdf->SetDrawColor(76,175,80);
 $pdf->SetLineWidth(.3);
 $pdf->SetFont('','B');
 
@@ -65,3 +67,4 @@ $pdf->Cell(array_sum($w), 0, '', 'T');
 $pdf->Output('I', 'pickingList.pdf');
 
 ?>
+

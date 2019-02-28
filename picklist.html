@@ -180,8 +180,12 @@
                     materials.push($(this).find('.material input').val());
                     quantity.push($(this).find('.quantity input').val());
                 }
-
             });
+
+            if (materials.length === 0 || quantity.length === 0) {
+                alert("Please enter atleast one delivery item");
+                return;
+            }
 
             $.ajax({
                 type: 'POST',

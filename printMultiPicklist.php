@@ -17,6 +17,7 @@ $lMargin = ($pdf->GetPageWidth() - array_sum($w)) / 2;
 $pdf->SetMargins($lMargin, 40);
 
 $pdf->AddPage();
+$pdf->Image("goback.png",8,11.3,73,0,"","retrievePickingList.html");
 $pdf->SetFont('Arial','',16);
 
 
