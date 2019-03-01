@@ -18,13 +18,28 @@ $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 if ($http_code == '200') {
 
     $results = json_decode($response, true);
-    foreach ($results as $result) {
-        foreach ($result['materials'] as $item) {
-            $material = $item['material_number'];
-            $qty = $item['quantity'];
-            array_push($deliveries, [$result['delivery_number'], $material, $qty]);
-        }
 
+    foreach ($results as $result) {
+
+        $created = $result['created_at'];
+
+        $exploded=explode("T",$created);
+        $created_date = $exploded[0];
+        $created_time = substr($exploded[1], 0, 8);
+        $created_at = $created_date . " " . $created_time;
+
+        foreach ($result['materials'] as $item) {
+
+            $material = $item['material_number'];
+            $serial_number = $item['serial_number'];
+            $qty = $item['quantity'];
+
+            if ($serial_number === "0") {
+                array_push($deliveries, [$result['delivery_number'], $created_at, $material, "", $qty]);
+            } else {
+                array_push($deliveries, [$result['delivery_number'], $created_at, $material, $serial_number, $qty]);
+            }
+        }
     }
 
     $results = array(

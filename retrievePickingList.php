@@ -27,14 +27,25 @@ if (!empty($deliveries)) {
         $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $results = json_decode($response, true);
         if ($http_code == '200') {
-            array_push($picking_list_array, ["success", $results['delivery_number'], $results['picking_list']]) ;
+            //array_push($picking_list_array, ["success", $results['delivery_number'], $results['picking_list']]) ;
+            foreach ($results['picking_list'] as $el) {
+                array_push($picking_list_array, [$results['delivery_number'], $el['material'], $el['bin'], $el['qty']]);
+            }
+
 
         } elseif ($http_code == '404') {
-            array_push($picking_list_array, ["failed", $delivery, ""]);
+            array_push($picking_list_array, ["Delivery Number \"".$delivery."\" not found.", "", "", ""]);
 
         }
     }
-    echo json_encode($picking_list_array);
+    //echo json_encode($picking_list_array);
+    $results = array(
+        "sEcho" => 1,
+        "iTotalRecords" => count($picking_list_array),
+        "iTotalDisplayRecords" => count($picking_list_array),
+        "aaData"=>$picking_list_array);
+
+    echo json_encode($results);
     curl_close($curl);
 }
 
