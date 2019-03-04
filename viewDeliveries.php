@@ -26,19 +26,16 @@ if ($http_code == '200') {
         $exploded=explode("T",$created);
         $created_date = $exploded[0];
         $created_time = substr($exploded[1], 0, 8);
-        $created_at = $created_date . " " . $created_time;
+        $created_at = $created_date . " @ " . $created_time;
 
-        foreach ($result['materials'] as $item) {
+        foreach ($result['picking_list'] as $item) {
 
-            $material = $item['material_number'];
-            $serial_number = $item['serial_number'];
-            $qty = $item['quantity'];
+            $material = $item['material'];
+            $serial_number = $item['serial_numer'];
+            $bin = $item['bin'];
+            $qty = $item['qty'];
 
-            if ($serial_number === "0") {
-                array_push($deliveries, [$result['delivery_number'], $created_at, $material, "", $qty]);
-            } else {
-                array_push($deliveries, [$result['delivery_number'], $created_at, $material, $serial_number, $qty]);
-            }
+            array_push($deliveries, [$result['delivery_number'], $result['status'], $created_at, $material, $serial_number, $bin, $qty]);
         }
     }
 

@@ -27,14 +27,21 @@ if (!empty($deliveries)) {
         $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $results = json_decode($response, true);
         if ($http_code == '200') {
-            //array_push($picking_list_array, ["success", $results['delivery_number'], $results['picking_list']]) ;
+
+            $created = $results['created_at'];
+
+            $exploded=explode("T",$created);
+            $created_date = $exploded[0];
+            $created_time = substr($exploded[1], 0, 8);
+            $created_at = $created_date . " @ " . $created_time;
+
             foreach ($results['picking_list'] as $el) {
-                array_push($picking_list_array, [$results['delivery_number'], $el['material'], $el['bin'], $el['qty']]);
+                array_push($picking_list_array, [$results['delivery_number'], $results['status'], $created_at, $el['material'],  $el['serial_numer'], $el['bin'], $el['qty']]);
             }
 
 
         } elseif ($http_code == '404') {
-            array_push($picking_list_array, ["Delivery Number \"".$delivery."\" not found.", "", "", ""]);
+            array_push($picking_list_array, [$delivery, "delivery not found.", "", "", "", "", "", ""]);
 
         }
     }

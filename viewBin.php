@@ -24,7 +24,7 @@ if ($http_code == '200') {
     //$materials = array_unique($materials_all);
 
     foreach ($materials as $material) {
-        curl_setopt($curl, CURLOPT_URL, $query . "/bins/" . $material[0]. "/" . $material[1]);
+        curl_setopt($curl, CURLOPT_URL, $query . "/bins/" . $material[0]);
         $response = curl_exec($curl);
         $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         if ($http_code == '200') {
@@ -36,12 +36,8 @@ if ($http_code == '200') {
 
                 $bin = $row["_id"];
                 $count = $row["count"];
-                if ($material[1] === "0") {
-                    array_push($viewBinArray, [$material[0], "", $bin, $count]);
-                } else {
-                    array_push($viewBinArray, [$material[0], $material[1], $bin, $count]);
-                }
 
+                array_push($viewBinArray, [$material[0], $material[1], $bin, $count]);
             }
         }
     }

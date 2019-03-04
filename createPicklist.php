@@ -17,12 +17,6 @@ if(isset($_POST['quantity'])) {
     $quantity = array();
 }
 
-if(isset($_POST['serial_number'])) {
-    $serial_number = json_decode($_POST['serial_number'], true);
-} else {
-    $serial_number = array();
-}
-
 //insert the delivery in delivery collection
 if (isset($delivery_number) and isset($materials) and isset($quantity)) {
 
@@ -43,31 +37,26 @@ if (isset($delivery_number) and isset($materials) and isset($quantity)) {
             array_push($material_bin_array, [$material_status, " ", " ", " "]);
         } else {
             //function to get all the bins which have the materials
-            $binCount = getBinCount($material, $serial_number[$key], $curl);
+            $binCount = getBinCount($material, $curl);
             //Material is missing serial number
             if (empty($binCount)) {
-                $material_status = "Material ".$material." must have valid serial number";
-                array_push($material_bin_array, [$material_status, " ", " ", " "]);
+                $material_status = "Material ".$material." not found in any bin";
+                array_push($material_bin_array, [$material_status, " ", " "]);
             } else {
                 //get all the bins that have the exact amount to be picked. This array only has the bin numbers
                 $bin_array = array_keys(array_intersect($binCount, [$quantity[$key]]));
 
-                if ($serial_number[$key] === "0") {
-                    $serial_num = " ";
-                } else {
-                    $serial_num = $serial_number[$key];
-                }
                 if (!empty($bin_array)) {
                     //exact quantity fulfillment from one bin
                     $bin = getClosestBin($bin_array, $curl);
                     //add bin to material_bin_array
-                    array_push($material_bin_array, [$material, $serial_num, $bin, $quantity[$key]]);
+                    array_push($material_bin_array, [$material, $bin, $quantity[$key]]);
                 } else {
                     //Partial fulfillments from multiple bins
-                    $partial_bins = getClosestPartialBins($binCount, $serial_num, $quantity[$key], $curl);
+                    $partial_bins = getClosestPartialBins($binCount, $quantity[$key], $curl);
                     //add bins to material_bin_array
                     foreach ($partial_bins as $partial_bin) {
-                        array_push($material_bin_array, [$material, $partial_bin[0], $partial_bin[1], $partial_bin[2]]);
+                        array_push($material_bin_array, [$material, $partial_bin[0], $partial_bin[1]]);
                     }
                 }
             }
@@ -81,16 +70,16 @@ if (isset($delivery_number) and isset($materials) and isset($quantity)) {
     //insert/update the delivery in deliveries table
 
     for ($index = 0; $index < $data_length; $index++) {
-        array_push($materials_array, array('material_number' => $materials[$index], 'serial_number' => $serial_num, 'quantity' => $quantity[$index]));
+        array_push($materials_array, array('material_number' => $materials[$index], 'quantity' => $quantity[$index]));
     }
     foreach ($material_bin_array as $picking_list_value) {
         array_push($picking_list_array, ['material' => $picking_list_value[0],
-                                                    'serial_numer' => $picking_list_value[1],
-                                                    'bin' => $picking_list_value[2],
-                                                    'qty' => $picking_list_value[3]]);
+                                                    'serial_numer' => "",
+                                                    'bin' => $picking_list_value[1],
+                                                    'qty' => $picking_list_value[2]]);
     }
 
-    $data = array('delivery_number' => $delivery_number, 'materials' => $materials_array, 'picking_list' => $picking_list_array);
+    $data = array('status' => 'created', 'delivery_number' => $delivery_number, 'materials' => $materials_array, 'picking_list' => $picking_list_array);
     $data_string = json_encode($data, JSON_FORCE_OBJECT);
 
     //Basic API access
@@ -149,8 +138,8 @@ function checkMaterialValid($material, $curl) {
 }
 
 //function to get the bins that contain a material and the quantity it contains
-function getBinCount($material, $serial, $curl) {
-    $query = "https://loaner-shure-server.herokuapp.com/api/loaners/bins/".$material."/".$serial;
+function getBinCount($material, $curl) {
+    $query = "https://loaner-shure-server.herokuapp.com/api/loaners/bins/".$material;
     $bin_count = array();
     $headers = array();
     $headers[] = 'Content-Type: application/json';
@@ -194,7 +183,7 @@ function getClosestBin($bin_array, $curl) {
 }
 
 //function to get all bins closest to gate for partial fulfillment
-function getClosestPartialBins($binCount, $serial_num, $qty, $curl) {
+function getClosestPartialBins($binCount, $qty, $curl) {
 
     $partial_closest_bins = array();
     $seq_array = array();
@@ -218,11 +207,11 @@ function getClosestPartialBins($binCount, $serial_num, $qty, $curl) {
     foreach ($seq_array as $seq_key=>$seq_val) {
         if ($qty >= 0) {
             if ($binCount[$seq_key] >= $qty) {
-                array_push($partial_closest_bins, [$serial_num, $seq_key, $qty]);
+                array_push($partial_closest_bins, [$seq_key, $qty]);
                 return $partial_closest_bins;
             } else {
                 $partial_qty = $qty - $binCount[$seq_key];
-                array_push($partial_closest_bins, [$serial_num, $seq_key, $binCount[$seq_key]]);
+                array_push($partial_closest_bins, [$seq_key, $binCount[$seq_key]]);
                 $qty = $partial_qty;
             }
         } else {
@@ -231,7 +220,7 @@ function getClosestPartialBins($binCount, $serial_num, $qty, $curl) {
     }
     // the remaining items which cannot be fullfilled
     if($qty > 0) {
-        array_push($partial_closest_bins, [$serial_num, 'not available', $partial_qty]);
+        array_push($partial_closest_bins, ['not available', $partial_qty]);
         return $partial_closest_bins;
     }
 }

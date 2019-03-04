@@ -64,34 +64,28 @@
             <thead>
                 <tr>
                     <th>Material</th>
-                    <th>Serial Number</th>
                     <th>Quantity</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td class="material"><input type="text" name="material"></td>
-                    <td class="serial_number"><input type="text" name="serial_number"></td>
                     <td class="quantity"><input  type="text" name="quantity"></td>
                 </tr>
                 <tr>
                     <td class="material"><input type="text" name="material"></td>
-                    <td class="serial_number"><input type="text" name="serial_number"></td>
                     <td class="quantity"><input  type="text" name="quantity"></td>
                 </tr>
                 <tr>
                     <td class="material"><input type="text" name="material"></td>
-                    <td class="serial_number"><input type="text" name="serial_number"></td>
                     <td class="quantity"><input  type="text" name="quantity"></td>
                 </tr>
                 <tr>
                     <td class="material"><input type="text" name="material"></td>
-                    <td class="serial_number"><input type="text" name="serial_number"></td>
                     <td class="quantity"><input  type="text" name="quantity"></td>
                 </tr>
                 <tr>
                     <td class="material"><input type="text" name="material"></td>
-                    <td class="serial_number"><input type="text" name="serial_number"></td>
                     <td class="quantity"><input  type="text" name="quantity"></td>
                 </tr>
             </tbody>
@@ -106,7 +100,6 @@
         <thead>
         <tr>
             <th>Material (SKU)</th>
-            <th>Serial Number</th>
             <th>Bin Location</th>
             <th>Count</th>
         </tr>
@@ -114,7 +107,6 @@
         <tfoot>
         <tr>
             <th>Material (SKU)</th>
-            <th>Serial Number</th>
             <th>Bin Location</th>
             <th>Count</th>
         </tr>
@@ -184,12 +176,6 @@
             $('#picklistTable tbody tr').each(function() {
                 if ($(this).find('.material input').val() !== "") {
                     materials.push($(this).find('.material input').val());
-                    //quantity.push($(this).find('.quantity input').val());
-                    if ($(this).find('.serial_number input').val() !== "") {
-                        serial_number.push($(this).find('.serial_number input').val());
-                    } else {
-                        serial_number.push('0');
-                    }
                 }
                 if ($(this).find('.quantity input').val() !== "") {
                     quantity.push($(this).find('.quantity input').val());
@@ -208,8 +194,7 @@
                 data: {
                     deliveryNumber: delivery_number,
                     materials: JSON.stringify(materials),
-                    quantity: JSON.stringify(quantity),
-                    serial_number: JSON.stringify(serial_number)
+                    quantity: JSON.stringify(quantity)
                 },
                 success: function(data) {
                     var result1 = JSON.parse(data);
