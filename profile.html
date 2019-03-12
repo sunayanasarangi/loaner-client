@@ -6,21 +6,8 @@
     <title>Generate Picking list</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="loaner.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.5.4/js/dataTables.buttons.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.5.4/js/buttons.flash.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.5.4/js/buttons.html5.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.5.4/js/buttons.print.min.js"></script>
-
 
 
 </head>
@@ -31,34 +18,16 @@
     <a class='logo notranslate w3-large' href='//www.beamandhook.com'>beam&hook<span class='dotcom'>.com</span></a>
 </div>
 
-<div class='w3-card-2 notranslate'>
-    <div style="overflow:auto;">
-        <div class="topnav" id='topnav'>
-            <a class="topnav-icons fa fa-home" href='index.html'></a>
-            <a href='picklist.html'>Generate Picking List</a>
-            <a href='retrievePickingList.html'>Retrieve Picking List</a>
-            <a href='binSequence.html'>Bin Sequence View</a>
-            <a href='viewBin.html'>Bin Report</a>
-            <a href='viewDeliveries.html'>Delivery History</a>
-            <div class="dropdown">
-                <button class="dropbtn">Profile
-                    <i class="fa fa-caret-down"></i>
-                </button>
-                <div class="dropdown-content">
-                    <a style="display: none" href="createUser.html" id="add_member">Add Member</a>
-                    <a href="#">Change Password</a>
-                    <a id="logout_btn">Logout</a>
-                </div>
-            </div>
-
-            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                <i class="fa fa-bars"></i>
-            </a>
-        </div>
-    </div>
+<div class="card">
+    <h1>John Doe</h1>
+    <p class="title">CEO & Founder, Example</p>
+    <p>Harvard University</p>
+    <a href="#"><i class="fa fa-dribbble"></i></a>
+    <a href="#"><i class="fa fa-twitter"></i></a>
+    <a href="#"><i class="fa fa-linkedin"></i></a>
+    <a href="#"><i class="fa fa-facebook"></i></a>
+    <p><button>Contact</button></p>
 </div>
-
-<h3 class="w3-panel w3-green w3-padding-16 w3-xlarge w3-center">Generate Picking List</h3>
 
 <div class="w3-container w3-center w3-responsive hide" id="back">
     <a class="w3-button w3-green w3-left" onclick="goBack()">Back</a>
@@ -148,25 +117,6 @@
 
 <script>
     $(document).ready(function () {
-
-        var loaner_cookie = getCookie("loaner-shure");
-        var user_cookie = getCookie("loaner-shure-user-type");
-        var element = document.getElementById("add_member");
-        if (loaner_cookie === "logged-in") {
-            if (user_cookie === "admin") {
-                element.style.display = "";
-            }
-        } else {
-            window.location = "login.html";
-        }
-
-        $('#logout_btn').click(function() {
-            document.cookie = "loaner-shure=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            document.cookie = "loaner-shure-user-type=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            window.location = "login.html";
-        });
-
-
         $('td input').bind('paste', null, function (e) {
             $txt = $(this);
             setTimeout(function () {
@@ -258,22 +208,6 @@
             });
         });
     });
-
-    function getCookie(cname) {
-        var name = cname + "=";
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(';');
-        for(var i = 0; i <ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
 </script>
 
 </body>

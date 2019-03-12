@@ -1,0 +1,88 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="loaner.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+</head>
+
+<body>
+
+<div class='w3-container top'>
+    <a class='logo notranslate w3-large' href='//www.beamandhook.com'>beam&hook<span class='dotcom'>.com</span></a>
+</div>
+
+<div class="w3-container w3-center w3-responsive" id="login">
+    <form class="form">
+        <div style="margin: 30px">
+            <h3>Login to Loaner</h3>
+        </div>
+        <div style="margin: 30px">
+            <label for="email" class="label" align="center" style="margin: 20px">
+                Email<span class="req">*</span>
+            </label>
+            <input id="email" class="input" align="center" type="email" required autocomplete="on" onfocus="this.value=''"/>
+        </div>
+        <div style="margin: 30px">
+            <label for="password" class="label" align="center" style="margin: 20px">
+                Password<span class="req">*</span>
+            </label>
+            <input id="password" class="input" align="center" type="password" required autocomplete="on" onfocus="this.value=''"/>
+        </div>
+        <input class="w3-button w3-black" type="button" id="login_btn" value="Login"></input>
+    </form>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        $('#login_btn').click(function() {
+            var email = $('#email').val();
+            var password = $('#password').val();
+            if (email === "" || password === "") {
+                alert("Please enter all the required fields marked with *");
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: 'login.php',
+                data: {
+                    email: email,
+                    password: password
+                },
+                success: function (data) {
+                    var loaner_cookie = getCookie("loaner-shure");
+                    if (loaner_cookie == "logged-in") {
+                        window.location = "index.html";
+                    }
+                }
+            });
+        });
+    });
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+</script>
+
+</body>
+</html>

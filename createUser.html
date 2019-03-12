@@ -1,0 +1,208 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Generate Picking list</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="loaner.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+</head>
+
+<body>
+
+<div class='w3-container top'>
+    <a class='logo notranslate w3-large' href='//www.beamandhook.com'>beam&hook<span class='dotcom'>.com</span></a>
+</div>
+
+<div class='w3-card-2 notranslate'>
+    <div style="overflow:auto;">
+        <div class="topnav" id='topnav'>
+            <a class="topnav-icons fa fa-home" href='index.html'></a>
+            <a href='picklist.html'>Generate Picking List</a>
+            <a href='retrievePickingList.html'>Retrieve Picking List</a>
+            <a href='binSequence.html'>Bin Sequence View</a>
+            <a href='viewBin.html'>Bin Report</a>
+            <a href='viewDeliveries.html'>Delivery History</a>
+            <div class="dropdown">
+                <button class="dropbtn">Profile
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a style="display: none" href="createUser.html" id="add_member">Add Member</a>
+                    <a href="#">Change Password</a>
+                    <a id="logout_btn">Logout</a>
+                </div>
+            </div>
+
+            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                <i class="fa fa-bars"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<h3 class="w3-panel w3-green w3-padding-16 w3-xlarge w3-center">Add Member</h3>
+
+<div class="w3-container w3-center w3-responsive" id="login">
+    <form class="form">
+        <div style="margin-top: 10px">
+                <h3>Register User</h3>
+        </div>
+        <div style="margin: 2px">
+            <label for="name" class="label" align="center" style="margin: 20px">
+                Name<span class="req">*</span>
+            </label>
+            <input id="name" class="input" align="center" type="text" required autocomplete="on" onfocus="this.value=''"/>
+        </div>
+        <div style="margin: 2px">
+            <label for="email" class="label" align="center" style="margin: 20px">
+                Email<span class="req">*</span>
+            </label>
+            <input id="email" class="input" align="center" type="text" required autocomplete="on" onfocus="this.value=''"/>
+        </div>
+        <div style="margin: 2px">
+            <label for="type" class="label" align="center" style="margin: 20px">
+                User Type<span class="req">*</span>
+            </label>
+            <select name="type" id="type" class="input">
+                <option value=""></option>
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
+        <div style="margin: 2px">
+            <label for="password" class="label" align="center" style="margin: 20px">
+                Password<span class="req">*</span>
+            </label>
+            <input id="password" class="input" align="center" type="password" required autocomplete="on" onfocus="this.value=''"/>
+        </div>
+        <div style="margin: 2px">
+            <label for="rep_password" class="label" align="center" style="margin: 20px">
+                Reenter Password<span class="req">*</span>
+            </label>
+            <input id="rep_password" class="input" align="center" type="password" required autocomplete="on" onfocus="this.value=''"/>
+        </div>
+        <br>
+        <input class="w3-button w3-black" type="button" id="reg_btn" value="Add User"></input>
+    </form>
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="reg_msg">Test</p>
+    </div>
+
+</div>
+
+<div class="footer w3-responsive">
+    <p></p>
+</div>
+
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("topnav");
+        if (x.className === "topnav") {
+            x.className += " responsive";
+        } else {
+            x.className = "topnav";
+        }
+    }
+</script>
+
+
+<script>
+    $(document).ready(function () {
+
+        var loaner_cookie = getCookie("loaner-shure");
+        var user_cookie = getCookie("loaner-shure-user-type");
+        var element = document.getElementById("add_member");
+        if (loaner_cookie === "logged-in") {
+            if (user_cookie === "admin") {
+                element.style.display = "";
+            }
+        } else {
+            window.location = "login.html";
+        }
+
+        $('#logout_btn').click(function() {
+            document.cookie = "loaner-shure=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "loaner-shure-user-type=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            window.location = "login.html";
+        });
+
+        $('#reg_btn').click(function() {
+            var name = $('#name').val();
+            var email = $('#email').val();
+            var type = $('#type').find(":selected").val();
+            var password = $('#password').val();
+            var rep_password = $('#rep_password').val();
+
+            if (name === "" || email === "" || type === "" || password === "" || rep_password === "") {
+                alert("Please enter all the required fields marked with *");
+                return;
+            }
+            if (password !== rep_password) {
+                alert("Password and re-entered password do not match");
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                url: 'createUser.php',
+                data: {
+                    name: name,
+                    email: email,
+                    type: type,
+                    password: password
+                },
+                success: function (data) {
+                    // Get the modal
+                    var modal = document.getElementById('myModal');
+                    // Get the <span> element that closes the modal
+                    var span = document.getElementsByClassName("close")[0];
+                    $('#reg_msg').text(data);
+                    modal.style.display = "block";
+                    span.onclick = function() {
+                        modal.style.display = "none";
+                        location.reload();
+                    }
+                    // When the user clicks anywhere outside of the modal, close it
+                    window.onclick = function(event) {
+                        if (event.target == modal) {
+                            modal.style.display = "none";
+                            location.reload();
+                        }
+                    }
+                }
+            });
+        });
+    });
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+</script>
+
+</body>
+</html>

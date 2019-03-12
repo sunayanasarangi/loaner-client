@@ -20,14 +20,30 @@ if(isset($_POST['quantity'])) {
 //insert the delivery in delivery collection
 if (isset($delivery_number) and isset($materials) and isset($quantity)) {
 
-    $data_length = sizeof($materials);
+    //consolidate multiple line items having same material
+    $mat_qty = array();
+    $materials_unik = array_unique( $materials );
+    $materials_duplicates = array_unique( array_diff_assoc( $materials, $materials_unik ) );
+    foreach ($materials as $key => $mat) {
+        if (in_array($mat, $materials_duplicates)) {
+            if (empty($mat_qty[$mat])) {
+                $mat_qty[$mat] = $quantity[$key];
+            } else {
+                $mat_qty[$mat] = $mat_qty[$mat] + $quantity[$key];
+            }
+        } else {
+            $mat_qty[$mat] = $quantity[$key];
+        }
+    }
+
+    $data_length = sizeof($materials_unik);
     $materials_array = array();
     $material_bin_array = array();
     $picking_list_array = array();
 
     $curl = curl_init();
 
-    foreach ($materials as $key=>$material) {
+    foreach ($materials_unik as $key=>$material) {
         //check if material is invalid or serial_number is missing in input
 
         $valid = checkMaterialValid($material, $curl);
@@ -44,16 +60,16 @@ if (isset($delivery_number) and isset($materials) and isset($quantity)) {
                 array_push($material_bin_array, [$material_status, " ", " "]);
             } else {
                 //get all the bins that have the exact amount to be picked. This array only has the bin numbers
-                $bin_array = array_keys(array_intersect($binCount, [$quantity[$key]]));
+                $bin_array = array_keys(array_intersect($binCount, [$mat_qty[$material]]));
 
                 if (!empty($bin_array)) {
                     //exact quantity fulfillment from one bin
                     $bin = getClosestBin($bin_array, $curl);
                     //add bin to material_bin_array
-                    array_push($material_bin_array, [$material, $bin, $quantity[$key]]);
+                    array_push($material_bin_array, [$material, $bin, $mat_qty[$material]]);
                 } else {
                     //Partial fulfillments from multiple bins
-                    $partial_bins = getClosestPartialBins($binCount, $quantity[$key], $curl);
+                    $partial_bins = getClosestPartialBins($binCount, $mat_qty[$material], $curl);
                     //add bins to material_bin_array
                     foreach ($partial_bins as $partial_bin) {
                         array_push($material_bin_array, [$material, $partial_bin[0], $partial_bin[1]]);
@@ -68,9 +84,12 @@ if (isset($delivery_number) and isset($materials) and isset($quantity)) {
     array_multisort($bin_column, SORT_ASC, $material_bin_array);
 
     //insert/update the delivery in deliveries table
-
+    /*
     for ($index = 0; $index < $data_length; $index++) {
         array_push($materials_array, array('material_number' => $materials[$index], 'quantity' => $quantity[$index]));
+    }*/
+    foreach ($mat_qty as $key => $val) {
+        array_push($materials_array, array('material_number' => $key, 'quantity' => $val));
     }
     foreach ($material_bin_array as $picking_list_value) {
         array_push($picking_list_array, ['material' => $picking_list_value[0],
