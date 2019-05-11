@@ -1,73 +1,43 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
-    <link rel="stylesheet" href="loaner.css">
-
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="loaner.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 
 </head>
 
 <body>
 
-    <div style="margin-bottom: 40px; margin-left: 20px; margin-top: 20px; margin-right: 20px">
-        <a class='logo notranslate' href='//www.beamandhook.com'>beam&hook<span class='dotcom'>.com</span></a>
-    </div>
+<div class='w3-container top'>
+    <a class='logo notranslate w3-large' href='//www.beamandhook.com'>beam&hook<span class='dotcom'>.com</span></a>
+</div>
 
-    <div class='container'>
-        <form class="col-6 form center_div" autocomplete="off">
-            <h3 class="form-elements">Sign In</h3>
-            <div class="form-group form-elements">
-                <label for="email">Email address</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter email" readonly="readonly"
-                onfocus="javascript:this.removeAttribute('readonly')">
-            </div>
-            <div class="form-group form-elements">
-                <label for="password">Password</label>
-                <input required type="password" class="form-control" id="password" placeholder="Password" readonly="readonly"
-                       onfocus="javascript:this.removeAttribute('readonly')">
-            </div>
-            <input type="button" class="btn btn-primary form-elements" value="Login" id="login_btn"></input>
-            <div style="text-align: center; margin-top: 20px; margin-bottom: 10px; color: #615D5E">
-                <a href="/" id="forgot_pwd">Forgot Password</a>
-            </div>
-
-        </form>
-
-                <!--
-                 <form class="form-horizontal">
-                <div style="margin: 30px">
-                    <h3>Login to Loaner</h3>
-                </div>
-                <div style="margin: 30px">
-                    <label for="email" class="label" align="center" style="margin: 20px">
-                        Email<span class="req">*</span>
-                    </label>
-                    <input id="email" class="input" align="center" type="email" required autocomplete="on" onfocus="this.value=''"/>
-                </div>
-                <div style="margin: 30px">
-                    <label for="password" class="label" align="center" style="margin: 20px">
-                        Password<span class="req">*</span>
-                    </label>
-                    <input id="password" class="input" align="center" type="password" required autocomplete="on" onfocus="this.value=''"/>
-                </div>
-                <input class="w3-button w3-black" type="button" id="login_btn" value="Login"></input>
-
-            </form>-->
-    </div>
-
+<div class="w3-container w3-center w3-responsive" id="login">
+    <form class="form">
+        <div style="margin: 30px">
+            <h3>Login to Loaner</h3>
+        </div>
+        <div style="margin: 30px">
+            <label for="email" class="label" align="center" style="margin: 20px">
+                Email<span class="req">*</span>
+            </label>
+            <input id="email" class="input" align="center" type="email" required autocomplete="on" onfocus="this.value=''"/>
+        </div>
+        <div style="margin: 30px">
+            <label for="password" class="label" align="center" style="margin: 20px">
+                Password<span class="req">*</span>
+            </label>
+            <input id="password" class="input" align="center" type="password" required autocomplete="on" onfocus="this.value=''"/>
+        </div>
+        <input class="w3-button w3-black" type="button" id="login_btn" value="Login"></input>
+    </form>
+</div>
 
 <!-- The Modal -->
 <div id="myModal" class="modal">

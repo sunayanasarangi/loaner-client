@@ -31,11 +31,12 @@ if ($http_code == '200') {
         foreach ($result['picking_list'] as $item) {
 
             $material = $item['material'];
-            $serial_number = $item['serial_numer'];
+            //$serial_number = $item['serial_numer'];
             $bin = $item['bin'];
             $qty = $item['qty'];
 
-            array_push($deliveries, [$result['delivery_number'], $result['status'], $created_at, $material, $serial_number, $bin, $qty]);
+            //array_push($deliveries, [$result['delivery_number'], $result['status'], $created_at, $material, $serial_number, $bin, $qty]);
+            array_push($deliveries, [$result['delivery_number'], $result['status'], $created_at, $material, $bin, $qty]);
         }
     }
 

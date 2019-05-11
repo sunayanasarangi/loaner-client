@@ -40,6 +40,8 @@ if (isset($delivery_number) and isset($materials) and isset($quantity)) {
     $materials_array = array();
     $material_bin_array = array();
     $picking_list_array = array();
+    $picking_list_itemised = array();
+    $item_count = array();
 
     $curl = curl_init();
 
@@ -78,27 +80,58 @@ if (isset($delivery_number) and isset($materials) and isset($quantity)) {
             }
         }
     }
+
     // Obtain a bin column
-    $bin_column  = array_column($material_bin_array, '2');
+    $bin_column  = array_column($material_bin_array, '1');
 
     array_multisort($bin_column, SORT_ASC, $material_bin_array);
-
-    //insert/update the delivery in deliveries table
-    /*
-    for ($index = 0; $index < $data_length; $index++) {
-        array_push($materials_array, array('material_number' => $materials[$index], 'quantity' => $quantity[$index]));
-    }*/
+    $seq = 0;
+    $seq_new = 0;
     foreach ($mat_qty as $key => $val) {
-        array_push($materials_array, array('material_number' => $key, 'quantity' => $val));
-    }
-    foreach ($material_bin_array as $picking_list_value) {
-        array_push($picking_list_array, ['material' => $picking_list_value[0],
-                                                    'serial_numer' => "",
-                                                    'bin' => $picking_list_value[1],
-                                                    'qty' => $picking_list_value[2]]);
+        $seq++;
+        array_push($materials_array, array('seq_num' => $seq, 'material_number' => $key, 'quantity' => $val));
+        $item_count[$key] = "0";
     }
 
-    $data = array('status' => 'created', 'delivery_number' => $delivery_number, 'materials' => $materials_array, 'picking_list' => $picking_list_array);
+    $count_item = 0;
+    foreach ($material_bin_array as $picking_list_value) {
+        foreach ($materials_array as $materials_array_el) {
+            if ($materials_array_el['material_number'] == $picking_list_value[0]) {
+                $item_sequence = $materials_array_el['seq_num'];
+            }
+        }
+
+        foreach ($item_count as $k => $v) {
+            if ($k == $picking_list_value[0]) {
+                $count_mat_itemised = $v;
+                break;
+            }
+        }
+
+        if ($picking_list_value[1] != "not available") {
+            $q = intval($picking_list_value[2], 10);
+            for($i=0; $i<$q; $i++) {
+                $count_mat_itemised++;
+                $count_item++;
+                array_push($picking_list_itemised, [
+                    'item_number' => $item_sequence.'/'.$count_mat_itemised,
+                    'material' => $picking_list_value[0],
+                    'bin' => $picking_list_value[1],
+                    'qty' => "1",
+                    'pick_status' => false]);
+            }
+            $item_count[$picking_list_value[0]] = $count_mat_itemised;
+        }
+    }
+
+    foreach ($item_count as $k => $v) {
+        $seq_new++;
+       array_push($picking_list_array, [ 'seq_num' => $seq_new,
+                                                'material' => $k,
+                                                'qty' => $v]);
+    }
+
+    $data = array('status' => 'created', 'delivery_number' => $delivery_number, 'picking_list' => $materials_array, 'picking_list_header' => $picking_list_array, 'picking_list_itemised' => $picking_list_itemised, 'count_itemised' => $count_item);
     $data_string = json_encode($data, JSON_FORCE_OBJECT);
 
     //Basic API access
@@ -135,7 +168,7 @@ if (isset($delivery_number) and isset($materials) and isset($quantity)) {
 function checkMaterialValid($material, $curl) {
     //Basic API access
     //$query = getenv('LOGIN_API');
-    $query = "https://loaner-shure-server.herokuapp.com/api/loaners/".$material;
+    $query = "https://loaner-shure-server.herokuapp.com/api/loaners/loaner/".$material;
     $headers = array();
     $headers[] = 'Content-Type: application/json';
     //$headers[] = 'Authorization: Basic '.base64_encode($username.":".$password);

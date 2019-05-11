@@ -36,12 +36,13 @@ if (!empty($deliveries)) {
             $created_at = $created_date . " @ " . $created_time;
 
             foreach ($results['picking_list'] as $el) {
-                array_push($picking_list_array, [$results['delivery_number'], $results['status'], $created_at, $el['material'],  $el['serial_numer'], $el['bin'], $el['qty']]);
+                //array_push($picking_list_array, [$results['delivery_number'], $results['status'], $created_at, $el['material'],  $el['serial_numer'], $el['bin'], $el['qty']]);
+                array_push($picking_list_array, [$results['delivery_number'], $results['status'], $created_at, $el['material'], $el['bin'], $el['qty']]);
             }
 
 
         } elseif ($http_code == '404') {
-            array_push($picking_list_array, [$delivery, "delivery not found.", "", "", "", "", "", ""]);
+            array_push($picking_list_array, [$delivery, "delivery not found.", "", "", "", ""]);
 
         }
     }
